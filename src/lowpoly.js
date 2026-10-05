@@ -153,12 +153,11 @@ export function buildGPU(scale = 1) {
   box(g, PAL.gpu, 0.86, 0.16, 0.34, -0.02, 0.1, 0);        // shroud rojo
   box(g, 0xf05555, 0.86, 0.02, 0.34, -0.02, 0.19, 0);      // brillo
   for (const fx of [-0.24, 0.2]) {
-    const fan = new THREE.Group();
+    const fan = new THREE.Group(); // el grupo gira en update() => las palas "rotan"
     for (let i = 0; i < 5; i++) {
       const b = box(fan, 0x2c2f38, 0.001, 0.1, 0.035, 0, 0, 0);
       b.rotation.x = (i / 5) * Math.PI * 2;
       b.position.set(0, Math.sin(b.rotation.x) * 0.05, Math.cos(b.rotation.x) * 0.05);
-      fanBlades.push(b);
     }
     fan.position.set(fx, 0.1, 0.17);
     g.add(fan);

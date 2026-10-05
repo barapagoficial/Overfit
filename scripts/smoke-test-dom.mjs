@@ -101,5 +101,27 @@ ok(document.querySelectorAll('.pcard').length === 9, 'vuelve al panel (pendiente
 // 6) guardar snapshot de estado
 ok(typeof state.skills === 'object' && SKILLS.every((s) => state.skills[s.id].level >= 1), 'todos los niveles >= 1');
 
+// 7) escenas 3D reales: construcción + update (sin renderer GL: basta con el grafo)
+const { RoomScene } = await import('../src/scene.js');
+let roomErr = null;
+try {
+  const room = new RoomScene();
+  for (let i = 0; i < 10; i++) room.update(0.05, i * 0.05);
+  room.hover(0, 0); room.click(0, 0); room.towerScreenPos(1280, 720);
+} catch (e) { roomErr = e; }
+ok(!roomErr, 'RoomScene: build + update + interacción sin errores' + (roomErr ? ' → ' + roomErr.message : ''));
+if (roomErr) { console.log(roomErr.stack); process.exit(1); }
+
+const { IntroScene } = await import('../src/intro.js');
+let introErr = null;
+try {
+  const intro = new IntroScene();
+  for (let i = 0; i < 10; i++) intro.update(0.05, i * 0.05);
+  intro.finish();
+  intro.destroy();
+} catch (e) { introErr = e; }
+ok(!introErr, 'IntroScene: build + update + finish + destroy sin errores' + (introErr ? ' → ' + introErr.message : ''));
+if (introErr) { console.log(introErr.stack); process.exit(1); }
+
 console.log(failures ? `\nFALLOS: ${failures}` : '\nSMOKE OK — todo el flujo pasó sin errores');
 process.exit(failures ? 1 : 0);
