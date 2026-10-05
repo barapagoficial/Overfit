@@ -37,9 +37,9 @@ const DATA = [
     { t: 'cepillar al hámster (preguntá primero)', tier: 3 }, { t: 'pintar paredes chiquito', tier: 1 } ] },
   { icon: '👕', obj: 'una REMERA mancha', uses: [
     { t: 'tirarla', tier: 0 }, { t: 'piyama', tier: 1 },
-    { t: 'trapeador de emergencia', tier: 2 }, { t: 'bandera de tu equipo de eスポーツ... de mesa', tier: 3 } ] },
+    { t: 'trapeador de emergencia', tier: 2 }, { t: 'bandera de tu club de e-gaming... de mesa', tier: 3 } ] },
   { icon: '🥚', obj: 'un HUEVO tibio', uses: [
-    { t: 'fritarlo', tier: 0 }, { t: 'jugar a la pasCUA con los vecinos', tier: 1 },
+    { t: 'fritarlo', tier: 0 }, { t: 'jugar a la búsqueda de pascua con los vecinos', tier: 1 },
     { t: 'experimento de vinagre (huevo ninja)', tier: 2 }, { t: 'batería del futuro (10% voltaje, 100% fe)', tier: 3 } ] },
   { icon: '📱', obj: 'un CELU viejo', uses: [
     { t: 'cajón', tier: 0 }, { t: 'reloj de mesa', tier: 1 },
