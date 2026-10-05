@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OVERFIT — entrena tu IA en una GTX 1050</title>
+  <!-- favicon data:, a propósito: no pedimos assets externos (100% offline) -->
+  <link rel="icon" href="data:," />
+</head>
+<body>
+  <!-- Lienzo 3D (Three.js): cuarto del protagonista e intro -->
+  <canvas id="scene"></canvas>
+
+  <!-- Capa de UI DOM (HUD, menús, panel de entrenamiento, minijuegos) -->
+  <div id="ui"></div>
+
+  <!-- Notificaciones flotantes ("toasts") -->
+  <div id="toasts" aria-live="polite"></div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

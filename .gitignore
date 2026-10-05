@@ -1,0 +1,7 @@
+# Dependencias y artefactos de build: no van al repositorio
+node_modules/
+dist/
+release/
+.vite/
+*.log
+.DS_Store

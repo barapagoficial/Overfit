@@ -1,0 +1,57 @@
+{
+  "name": "overfit",
+  "productName": "Overfit",
+  "version": "0.1.0",
+  "description": "Juego idle/simulación: entrena tu propia IA en una GTX 1050 que te regaló tu tío. Three.js + Electron, 100% offline.",
+  "author": "Overfit Dev",
+  "license": "MIT",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "start": "node scripts/dev.cjs",
+    "start:web": "vite",
+    "dev:web": "vite",
+    "build:web": "vite build",
+    "build": "vite build && electron-builder --win portable",
+    "gen-icon": "node scripts/gen-icon.cjs",
+    "smoke:dom": "node scripts/smoke-test-dom.mjs"
+  },
+  "dependencies": {
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "electron": "^44.5.1",
+    "electron-builder": "^26.15.3",
+    "esbuild": "^0.28.2",
+    "vite": "^8.3.2"
+  },
+  "build": {
+    "appId": "com.overfit.ai",
+    "productName": "Overfit",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png",
+      "artifactName": "Overfit-Portable-${version}.exe"
+    },
+    "portable": {
+      "requestExecutionLevel": "user"
+    }
+  }
+}
