@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overfit</title>
+  <link rel="stylesheet" href="./src/styles.css" />
+</head>
+<body>
+  <!-- Contenedor de Three.js -->
+  <canvas id="game-canvas"></canvas>
+
+  <!-- HUD (siempre visible durante el juego) -->
+  <div id="hud" class="hidden">
+    <div class="hud-top-left">
+      <div class="aipoints-display">
+        <span class="aipoints-label">AI Points</span>
+        <span id="aipoints-value" class="aipoints-value">0.00</span>
+      </div>
+      <div class="gpu-display">
+        <span id="gpu-name" class="gpu-name">GTX 1050</span>
+        <span class="gpu-tier">Tier 1</span>
+      </div>
+    </div>
+
+    <div class="hud-bottom">
+      <div id="skills-bar" class="skills-bar"></div>
+    </div>
+
+    <div class="hud-top-right">
+      <button id="btn-menu" class="btn-ghost" title="Pausa / Menú">☰</button>
+    </div>
+
+    <div id="interaction-hint" class="interaction-hint hidden">
+      Pulsa <kbd>E</kbd> para interactuar con el PC
+    </div>
+  </div>
+
+  <!-- Panel de entrenamiento (al interactuar con el PC) -->
+  <div id="training-panel" class="panel hidden">
+    <div class="panel-header">
+      <h2>ENTRENAMIENTO DE IA</h2>
+      <button id="close-training" class="btn-ghost">✕</button>
+    </div>
+    <div class="panel-body">
+      <p class="panel-subtitle">Elige cómo entrenar a tu monstruosidad digital</p>
+
+      <div class="training-mode">
+        <button id="btn-general-train" class="train-option general">
+          <div class="train-option-title">Entrenamiento General</div>
+          <div class="train-option-desc">Mejora todas las habilidades un poquito. Muy lento, pero seguro.</div>
+        </button>
+      </div>
+
+      <h3 class="section-title">Entrenamiento específico</h3>
+      <div id="skills-grid" class="skills-grid"></div>
+
+      <h3 class="section-title">Dificultad</h3>
+      <div class="difficulty-selector">
+        <button id="diff-easy" class="diff-btn active" data-diff="easy">
+          <div class="diff-name">Fácil</div>
+          <div class="diff-desc">Bajo riesgo, poca recompensa</div>
+          <div class="diff-mult">×1 base</div>
+        </button>
+        <button id="diff-extreme" class="diff-btn" data-diff="extreme">
+          <div class="diff-name">EXTREMO</div>
+          <div class="diff-desc">Mucho riesgo, recompensa alta</div>
+          <div class="diff-mult">×5–×10 base</div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenedor del minijuego -->
+  <div id="minigame-overlay" class="overlay hidden">
+    <div id="minigame-container" class="minigame-container"></div>
+  </div>
+
+  <!-- Pantalla de título / menú principal -->
+  <div id="main-menu" class="overlay">
+    <div class="menu-content">
+      <h1 class="game-title">OVERFIT</h1>
+      <p class="game-subtitle">Entrená tu IA con una GTX 1050. ¿Qué puede salir mal?</p>
+      <div class="menu-buttons">
+        <button id="btn-new-game" class="btn-primary">Nueva Partida</button>
+        <button id="btn-continue" class="btn-secondary" disabled>Continuar</button>
+        <button id="btn-options" class="btn-secondary">Opciones</button>
+        <button id="btn-credits" class="btn-secondary">Créditos</button>
+      </div>
+      <p class="menu-version">v1.0.0 MVP</p>
+    </div>
+  </div>
+
+  <!-- Opciones -->
+  <div id="options-panel" class="panel hidden menu-panel">
+    <div class="panel-header">
+      <h2>OPCIONES</h2>
+      <button id="close-options" class="btn-ghost">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="option-row">
+        <label>Volumen maestro</label>
+        <input id="volume-master" type="range" min="0" max="100" value="70" />
+        <span id="volume-master-val">70%</span>
+      </div>
+      <div class="option-row">
+        <label>Volumen SFX</label>
+        <input id="volume-sfx" type="range" min="0" max="100" value="80" />
+        <span id="volume-sfx-val">80%</span>
+      </div>
+      <button id="btn-delete-save" class="btn-danger">Borrar partida guardada</button>
+    </div>
+  </div>
+
+  <!-- Créditos -->
+  <div id="credits-panel" class="panel hidden menu-panel">
+    <div class="panel-header">
+      <h2>CRÉDITOS</h2>
+      <button id="close-credits" class="btn-ghost">✕</button>
+    </div>
+    <div class="panel-body credits-text">
+      <p><strong>OVERFIT</strong> — Un juego sobre entrenar una IA con una GTX 1050.</p>
+      <p>Motor: Three.js + Electron.</p>
+      <p>Hecho con humor latino y estética deliberadamente fea.</p>
+      <p class="muted">La GTX 1050 es un producto real de NVIDIA. Este juego no está afiliado.</p>
+    </div>
+  </div>
+
+  <!-- Menú pausa -->
+  <div id="pause-menu" class="overlay hidden">
+    <div class="menu-content pause-content">
+      <h2>PAUSA</h2>
+      <div class="menu-buttons">
+        <button id="btn-resume" class="btn-primary">Continuar</button>
+        <button id="btn-pause-options" class="btn-secondary">Opciones</button>
+        <button id="btn-quit" class="btn-danger">Volver al menú principal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Intro -->
+  <div id="intro-overlay" class="overlay hidden">
+    <div id="intro-content" class="intro-content">
+      <div id="intro-text" class="intro-text"></div>
+      <div class="intro-controls">
+        <button id="intro-skip" class="btn-ghost">SALTAR (ESPACIO)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup de recompensa -->
+  <div id="reward-popup" class="reward-popup hidden">
+    <div class="reward-title" id="reward-title">¡Entrenamiento completado!</div>
+    <div class="reward-points">
+      +<span id="reward-value">0.00</span> AI Points
+    </div>
+    <div id="reward-skill" class="reward-skill"></div>
+  </div>
+
+  <!-- Tooltip/mensaje flotante para sumas de puntos -->
+  <div id="points-floater" class="points-floater hidden"></div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
